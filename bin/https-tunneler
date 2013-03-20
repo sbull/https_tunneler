@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+require File.expand_path('../lib/https_tunneler', File.dirname(__FILE__))
+
+server_port = ARGV[0]
+client_port = ARGV[1]
+debug = ARGV[2]
+
+server_port = server_port ? server_port.to_i : 3000
+debug = debug == '0' ? false : true
+
+#HttpsTunneler.debug = debug
+tunneler = HttpsTunneler.start_tunneler_thread(server_port, client_port)
+tunneler.debug = debug
+puts "HttpsTunneler tunneling to http://localhost:#{tunneler.server_port}/ through https://localhost:#{tunneler.client_port}/ - debug #{tunneler.debug? ? 'ON' : 'off'}."
+tunneler.thread.join
